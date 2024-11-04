@@ -19,7 +19,15 @@ Total run overview: [link](https://wandb.ai/kariakinaleksandr/jb_synthetic_datas
 
 Then we run the evaluation of a finetuned model. The logs and the results can be found here: [link](https://wandb.ai/kariakinaleksandr/jb_synthetic_dataset_test_task/runs/vdxu0z5h/overview).
 
+After evaluation, `granite-finetuned-final_results.json` file is saved, helping to get what are the possible issues of the evaluated model.
 
+Unfortunately,the final finetuned model pass rate is 0.0. It shows that highly synthetic dataset is only confusing the model, but not guiding it for solving complex Kotlin tasks.
+
+`granite-finetuned-final` file contains the model answers for the test cases, and we can easily analyze them:
+
+- Model repeats same special token many times. This is happening due to large max_length parameter. However, in the other experiment I did, where the max_length was 256, probably because of that it was not enough to generate `return` and `}` in the end of code, giving a 0 score. 
+
+- Model forgets to write return in the end of the functions and close the brackets. These are syntax errors we need to pay attention in dataset.
 
 >  In addition, please discuss if we need to do filter the dataset you've obtained, and if yes -- how we should filter it.
 
